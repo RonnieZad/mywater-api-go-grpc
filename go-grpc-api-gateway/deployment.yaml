@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpcsrv-api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpcsrv-api-gateway
+  template:
+    metadata:
+      labels:
+        app: grpcsrv-api-gateway
+    spec:
+      containers:
+        - name: grpcsrv-api-gateway
+          image: registry.digitalocean.com/go-grpc-api-gateway/grpcsrv-api-gateway:v1.0.0
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: AUTH_SVC_URL
+              value: "localhost:50051"
+            - name: PRODUCT_SVC_URL
+              value: "localhost:50052"
+            - name: ORDER_SVC_URL
+              value: "localhost:50053"

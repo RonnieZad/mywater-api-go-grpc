@@ -1,0 +1,12 @@
+# # exclude all files in the node_modules directory
+# # node_modules/
+
+# # exclude all .go files
+# *.go
+
+# *.mod
+
+# *.sum
+
+# # exclude all .env files
+# # *.env

@@ -1,0 +1,366 @@
+syntax = "proto3";
+
+package application;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "./pkg/pb";
+
+
+service ApplicationService {
+  rpc MakeHouseFinanceApplication(MakeHouseFinanceApplicationRequest) returns (MakeHouseFinanceApplicationResponse) {}
+  rpc ListMakeHouseFinanceApplication(ListMakeHouseFinanceApplicationRequest) returns (ListMakeHouseFinanceApplicationResponse) {}
+  rpc FindOneMakeHouseFinanceApplication(FindOneMakeHouseFinanceApplicationRequest) returns (FindOneMakeHouseFinanceApplicationResponse) {}
+  rpc MakeTourRequestApplication(MakeTourRequestApplicationRequest) returns (MakeTourRequestApplicationResponse) {}
+  rpc RentFinancingRequestApplication(RentFinancingRequestApplicationRequest) returns (RentFinancingRequestApplicationResponse) {}
+  rpc GetUserRentApplication(GetUserRentApplicationRequest) returns (GetUserRentApplicationResponse) {}
+  rpc GetAllUserRentApplications(GetAllUserRentApplicationsRequest) returns (GetAllUserRentApplicationsResponse) {}
+  rpc DeclineRentApplication(DeclineRentApplicationRequest) returns (DeclineRentApplicationResponse) {}
+  rpc ApproveRentApplication(ApproveRentApplicationRequest) returns (ApproveRentApplicationResponse) {}
+  rpc DeleteRentApplication(DeleteRentApplicationRequest) returns (DeleteRentApplicationResponse) {}
+  rpc DeleteTourApplication(DeleteTourApplicationRequest) returns (DeleteTourApplicationResponse) {}
+  rpc UpdateApplicationLandlordPaymentStatus(UpdateApplicationLandlordPaymentStatusRequest) returns (UpdateApplicationLandlordPaymentStatusResponse) {}
+  rpc UpdateApplicationSecurityDepositPaidStatus(UpdateApplicationSecurityDepositPaidStatusRequest) returns (UpdateApplicationSecurityDepositPaidStatusResponse) {}
+  rpc UpdateApplicationRepaymentDetails(UpdateApplicationRepaymentDetailsRequest) returns (UpdateApplicationRepaymentDetailsResponse) {}
+  rpc RoomMateApplication(RoomMateApplicationRequest) returns (RoomMateApplicationResponse) {}
+  rpc RoomMateApplicationUpdate(RoomMateApplicationUpdateRequest) returns (RoomMateApplicationUpdateResponse) {}
+  rpc ManageUserLock(ManageUserLockRequest) returns (ManageUserLockResponse) {}
+  rpc GetApplicationMetrics(GetApplicationMetricsRequest) returns (GetApplicationMetricsResponse) {}
+}
+
+message RoomMateApplicationRequest {
+  string user_id = 1;
+  string location_address = 2;
+  double location_coordinates_lat = 3;
+  double location_coordinates_long = 4;
+  bool has_independent_bathroom = 5;
+  bool is_bathroom_inside = 6;
+  string rooms_to_share = 7;
+  string bill_management = 8;
+  double rent_amount = 9;
+  string music_genre = 10;
+  string food_allergies = 11;
+  string winding_down_activity = 12;
+  string pets = 13;
+  bool is_smoker = 14;
+  string photo_capture_date = 15;
+  string photo_capture_time = 16;
+  bool has_paid_application_fee = 17;
+}
+
+message RoomMateApplicationResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message RoomMateApplicationUpdateRequest {
+  string user_id = 1;
+  bool status = 2;
+}
+
+message RoomMateApplicationUpdateResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+
+message ApproveRentApplicationRequest {
+  string user_id = 1;
+  string application_id = 2;
+  int64 application_status = 3;
+}
+
+message ApproveRentApplicationResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message DeclineRentApplicationRequest {
+  string user_id = 1;
+}
+
+message DeclineRentApplicationResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+
+message MakeHouseFinanceApplicationRequest {
+  string user_id = 1;
+  string property_id = 2;
+  string earning_window_frame = 3;
+  string next_expected_pay_date = 4;
+  double income_range_minimum = 5;
+  double income_range_maximum = 6;
+  double requested_amount = 7;
+  double requested_amount_percentage = 8;
+  double amount_qualified = 9;
+  double payback_interest = 10;
+  double interest_amount = 11;
+  string rent_finance_period = 12;
+  bool approval_status = 13;
+  bool payment_sent_to_landlord = 14;
+  string approved_by = 15;
+}
+
+message MakeHouseFinanceApplicationResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  string id = 4;
+}
+
+message ListMakeHouseFinanceApplicationRequest {
+  string id = 1;
+}
+
+message ListMakeHouseFinanceApplicationResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  // repeated Property properties = 4;
+}
+
+// FindOneMakeHouseFinanceApplication
+
+message FindOneMakeHouseFinanceApplicationData {
+  string property_id = 1;
+  string name = 2;
+  double price = 3;
+}
+
+message FindOneMakeHouseFinanceApplicationRequest {
+  string id = 1;
+}
+
+message FindOneMakeHouseFinanceApplicationResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  FindOneMakeHouseFinanceApplicationData data = 4;
+}
+
+message MakeTourRequestApplicationRequest {
+  string property_id = 1;
+  string user_id = 2;
+  int64 reservation_type = 3;
+  string appointment_date =4;
+  bool payment_status = 5;
+}
+
+  message MakeTourRequestApplicationResponse {
+    int64 status = 1;
+    string error = 2;
+    string message = 3;
+    string id = 4;
+  }
+
+  message RentFinancingRequestApplicationRequest {
+    string user_id = 1;
+    string property_id = 2;
+    string earning_window_frame = 3;
+    string next_expected_pay_date = 4;
+    double income_range_minimum = 5;
+    double income_range_maximum = 6;
+    double requested_amount = 7;
+    double requested_amount_percentage = 8;
+    double amount_qualified = 9;
+    double payback_interest = 10;
+    double interest_amount = 11;
+    int32 rent_finance_period = 12;
+    bool approval_status = 13;
+    string approved_by = 14;
+  }
+
+  message RentFinancingRequestApplicationResponse {
+    int64 status = 1;
+    string error = 2;
+    string message = 3;
+    string id = 4;
+  }
+
+  // get single user data
+message GetUserRentApplicationRequest {
+  string user_id = 1;
+}
+
+message GetUserRentApplicationResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  google.protobuf.Struct data = 4;
+}
+
+message PropertyInfo {
+  string name = 1;
+  int32 property_type = 2;
+  string property_type_text = 3;
+  string property_reference = 4;
+  string location_text = 5;
+  double location_coordinates_lat = 6;
+  double location_coordinates_long = 7;
+  double rent_price = 8;
+  double service_charge_fee = 9;
+  double agent_fee = 10;
+  double legal_fee = 11;
+  int32 rental_deposit_period = 12;
+  string description = 13;
+  int32 feature_bedrooms = 14;
+  int32 feature_bathrooms = 15;
+  int32 feature_size = 16;
+  string cover_photo = 17;
+  bool is_property_available = 18;
+  bool is_property_on_hold = 19;
+  string property_is_held_by = 20;
+  string lease_terms = 21;
+}
+
+message UserInfo {
+  string id = 1;
+  string phone_number = 2;
+  string name = 3;
+  string gender = 4;
+  string email_address = 5;
+  string date_of_birth = 6;
+  string role = 7;
+  string nin = 8;
+  bool is_kyc_verified = 9;
+  optional float credit_score = 10;
+  bool is_finance_worthy = 11;
+  string work_place = 12;
+  string employer_name = 13;
+  float salary_scale = 14;
+  string profile_pic = 15;
+  string pay_slip = 16;
+  string employee_id = 17;
+  string national_id = 18;
+  bool is_acount_active = 19;
+  bool is_property_preference_set = 20;
+}
+
+message HouseFinancingApplicationData {
+  string id = 1;
+  string application_id = 2;
+  string user_id = 3;
+  string property_id = 4;
+  string property_name = 5;
+  UserInfo user_info = 6;
+  PropertyInfo property_info = 7;
+  string earning_window_frame = 8;
+  string next_expected_pay_date = 9;
+  double income_range_minimum = 10;
+  double income_range_maximum = 11;
+  double requested_amount = 12;
+  double requested_amount_percentage = 13;
+  double amount_qualified = 14;
+  double payback_interest = 15;
+  double interest_amount = 16;
+  double other_fees_amount = 17;
+  double total_amount = 18;
+  double amount_paid_back = 19;
+  double remaining_balance = 20;
+  double monthly_pay_back = 21;
+  int32 rent_finance_period = 22;
+  bool approval_status = 23;
+  string approved_by = 24;
+  string application_date = 25;
+  optional bool is_landlord_paid = 26;
+  optional bool is_installment_one_made = 27;
+  optional bool is_installment_two_made = 28;
+  optional bool is_installment_three_made = 29;
+  optional string installment_one_date = 30;
+  optional string installment_two_date = 31;
+  optional string installment_three_date = 32;
+}
+
+message GetAllUserRentApplicationsRequest {
+}
+
+message GetAllUserRentApplicationsResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  repeated HouseFinancingApplicationData data = 4;
+}
+
+message DeleteRentApplicationRequest {
+  string user_id = 1;
+}
+
+message DeleteRentApplicationResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+
+message DeleteTourApplicationRequest {
+  string user_id = 1;
+}
+
+message DeleteTourApplicationResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message UpdateApplicationLandlordPaymentStatusRequest {
+  string application_id = 1;
+  bool status = 2;
+}
+
+message UpdateApplicationLandlordPaymentStatusResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message UpdateApplicationSecurityDepositPaidStatusRequest {
+  string application_id = 1;
+  bool status = 2;
+}
+
+message UpdateApplicationSecurityDepositPaidStatusResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message UpdateApplicationRepaymentDetailsRequest {
+  string application_id = 1;
+  int32 installment_count = 2;
+  double installment_amount = 3;
+  bool status = 4;
+}
+
+message UpdateApplicationRepaymentDetailsResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message ManageUserLockRequest {
+  string application_id = 1;
+}
+
+message ManageUserLockResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message GetApplicationMetricsRequest {
+
+}
+
+message GetApplicationMetricsResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  int32 total_rent_financing_applications = 4;
+  int32 total_roommate_applications = 5;
+}

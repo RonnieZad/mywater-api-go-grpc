@@ -1,0 +1,316 @@
+syntax = "proto3";
+
+package auth;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "./pkg/pb";
+
+service AuthService {
+  rpc PhoneNumberVerification(PhoneNumberVerificationRequest) returns (PhoneNumberVerificationResponse) {}
+  rpc PhoneNumberVerificationWithOTP(PhoneNumberVerificationWithOTPRequest) returns (PhoneNumberVerificationWithOTPResponse) {}
+  rpc Register(RegisterRequest) returns (RegisterResponse) {}
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
+  rpc Validate(ValidateRequest) returns (ValidateResponse) {}
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
+  rpc VerifyResetToken(VerifyResetTokenRequest) returns (VerifyResetTokenResponse) {}
+  rpc UpdatePassword(UpdatePasswordRequest) returns (UpdatePasswordResponse) {}
+  rpc ResendOTP(ResendOTPRequest) returns (ResendOTPResponse) {}
+  rpc UpdatePhoneNumber(UpdatePhoneNumberRequest) returns (UpdatePhoneNumberResponse) {}
+  rpc DeactivateUser(DeactivateUserRequest) returns (DeactivateUserResponse) {}
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+  rpc UpdateDocument(UpdateDocumentRequest) returns (UpdateDocumentResponse) {}
+  rpc KYCVerificationResultCallback(KYCVerificationResultRequest) returns (KYCVerificationResultResponse) {}
+  rpc ValidateEmail(ValidateEmailRequest) returns (ValidateEmailResponse) {}
+  rpc GetUserMetrics(GetUserMetricsRequest) returns (GetUserMetricsResponse) {}
+}
+
+// phone number verification request
+message PhoneNumberVerificationRequest {
+  string phone_number = 1;
+}
+
+// phone number verification response
+message PhoneNumberVerificationResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  bool is_valid = 4;
+}
+
+// phone number verification request
+message PhoneNumberVerificationWithOTPRequest {
+  string phone_number = 1;
+  string otp = 2;
+}
+
+// phone number verification response
+message PhoneNumberVerificationWithOTPResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  bool is_valid = 4;
+  bool has_account = 5;
+  bool is_account_verified = 6;
+}
+
+// acount registration
+message RegisterRequest {
+  string phone_number = 1;
+  string phone_number_verification_code = 2;
+  string name = 3;
+  string email_address = 4;  
+  string password = 5;
+  string role = 6;
+  string profile_pic = 7;
+  string user_uid = 8;
+  string company_name = 9;
+  string company_logo = 10;
+  string company_website = 11;
+  string company_email = 12;
+  string company_phone = 13;
+  string company_address = 14;
+  string company_description = 15;
+}
+
+message RegisterResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  string token = 4;
+  google.protobuf.Struct data = 5;
+}
+
+// Login
+message LoginRequest {
+  string email_address = 1;
+  string password = 2;
+  string phone_number = 3;
+}
+
+message LoginResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  string token = 4;
+  google.protobuf.Struct data = 5;
+}
+
+// get single user data
+message GetUserRequest {
+  string user_id = 1;
+}
+
+message UserData {
+  string id = 1;
+  string name = 2;
+  string email_address = 3;
+  string phone_number = 4;
+  string date_of_birth = 5;
+  string gender = 6;
+  string role = 7;
+  string nin = 8;
+  bool is_kyc_verified = 9;
+  optional float credit_score = 10;
+  bool is_finance_worthy = 11;
+  string work_place = 12;
+  string employer_name = 13;
+  string salary_scale = 14;
+  string profile_pic = 15;
+  string pay_slip = 16;
+  string employee_id = 17;
+  string national_id = 18;
+  bool is_account_active = 19;
+  bool is_property_preference_set = 20;
+  string created_at = 21;
+  string updated_at = 22;
+  string deleted_at = 23;
+}
+
+message GetUserResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  string token = 4;
+  UserData data = 5;
+}
+
+// Reset Password
+message ResetPasswordRequest {
+  string identifier = 1;
+  string password = 2;
+  string phone_number = 3;
+}
+
+message ResetPasswordResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+// Password Reset Token
+message VerifyResetTokenRequest {
+  string password_reset_token = 1;
+}
+
+message VerifyResetTokenResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+// Update Password
+message UpdatePasswordRequest {
+  string password_reset_token = 1;
+  string new_password = 2;
+}
+
+message UpdatePasswordResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+// Resend OTP
+message ResendOTPRequest {
+  string phone_number = 1;
+}
+
+message ResendOTPResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+// Update phone number
+message UpdatePhoneNumberRequest {
+  string user_id = 1;
+  string new_phone_number = 2;
+}
+
+message UpdatePhoneNumberResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+// Deactivate user account
+message DeactivateUserRequest {
+  string user_id = 1;
+}
+
+message DeactivateUserResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+// Deactivate user account
+message DeleteUserRequest {
+  string user_id = 1;
+}
+
+message DeleteUserResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+// Validate
+message ValidateRequest {
+  string token = 1;
+}
+
+message ValidateResponse {
+  int64 status = 1;
+  string error = 2;
+  string user_id = 3;
+}
+
+// Update Document
+message UpdateDocumentRequest {
+  string user_id = 1;
+  string national_id_url = 2;
+  string pay_slip_id_url = 3;
+  string employee_id_url = 4;
+}
+
+message UpdateDocumentResponse {
+  string id = 1;
+  int64 status = 2;
+  string error = 3;
+  string message = 4;
+}
+
+// smile identity KYC callback result
+message KYCVerificationResultRequest {
+  message Actions {
+    string liveness_check = 1;
+    string register_selfie = 2;
+    string verify_document = 3;
+    string human_review_compare = 4;
+    string return_personal_info = 5;
+    string selfie_to_id_card_compare = 6;
+    string human_review_liveness_check = 7;
+  }
+  message PartnerParams {
+    string job_id = 1;
+    string user_id = 2;
+    string job_type = 3;
+  }
+  message ImageLinks {
+    string id_card_image = 1;
+    string id_card_back = 2;
+    string selfie_image = 3;
+  }
+  string dob = 1;
+  string fullname = 2;
+  string gender = 3;
+  string idtype = 4;
+  Actions actions = 5;
+  string country = 6;
+  string document = 7;
+  string idnumber = 8;
+  string resultcode = 9;
+  string resulttext = 10;
+  string smilejobid = 11;
+  PartnerParams partnerparams = 12;
+  string expirationdate = 13;
+  string timestamp = 14;
+  string signature = 15;
+  ImageLinks imagelinks = 16;
+}
+
+message KYCVerificationResultResponse {
+  KYCVerificationResultRequest result = 1;
+  string error_message = 2;
+  bool success = 3;
+  int64 status = 4;
+  string error = 5;
+  string message = 6;
+}
+
+// Validate Email
+message ValidateEmailRequest {
+  string email_address = 1;
+  string ip_address = 2;
+}
+
+message ValidateEmailResponse {
+  string id = 1;
+  int64 status = 2;
+  string error = 3;
+  string message = 4;
+  bool is_valid = 5;
+}
+
+message GetUserMetricsRequest {
+}
+
+message GetUserMetricsResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  int32 total_users =4;
+}

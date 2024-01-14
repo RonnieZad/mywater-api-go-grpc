@@ -1,0 +1,40 @@
+config:
+  target: "https://api.enyumba.com/auth"  # Replace with your API endpoint
+  phases:
+    - duration: 60
+      arrivalRate: 100  # Adjust the arrival rate as per your requirement
+  defaults:
+    headers:
+      Content-Type: "application/json"
+scenarios:
+  - name: "Authentication Stress Test"
+    flow:
+      - post:
+          url: "/account_registration"  # Replace with the actual registration endpoint
+          json:
+            phone_number: "${__random(100000000, 999999999)}"  # Use __random function to generate a random 9-digit number
+            otp: "${__randomString(6, '0123456789')}"  # Use __randomString function to generate a 6-digit random OTP
+            name: "Test User {{__VU}}"  # Add {{__VU}} to include the virtual user number in the name
+            email_address: "testuser{{__VU}}@example.com"  # Include the virtual user number in the email address
+            role: "client"
+            password: "password123"  # Replace with the desired password
+            repeat_password: "password123"  # Replace with the desired repeat password
+      # - afterResponse:
+      #     - log: "Registration successful - {{ __capture(response) }}"  # Log the response for successful registration
+
+
+# config:
+#   target: "https://airportgap-stress-test.dev-tester.com/api"
+#   phases:
+#     - duration: 60
+#       arrivalRate: 5
+#       rampTo: 25
+
+# scenarios:
+#   - name: "Calculate airport distances"
+#     flow:
+#       - post:
+#           url: "/airports/distance"
+#           json:
+#             from: "KIX"
+#             to: "SFO"

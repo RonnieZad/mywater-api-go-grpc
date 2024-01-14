@@ -1,0 +1,30 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: grpcsrv-api-gateway
+# spec:
+#   selector:
+#     run: grpcsrv-api-gateway
+#   ports:
+#     - name: http
+#       port: 3000
+#       protocol: TCP
+#       targetPort: 3000
+#   type: ClusterIP
+# status:
+#   loadBalancer: {}
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpcsrv-api-gateway
+spec:
+  type: LoadBalancer
+  selector:
+    app: grpcsrv-api-gateway
+  ports:
+    - name: http
+      port: 3000
+      protocol: TCP
+      targetPort: 3000

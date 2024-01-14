@@ -1,0 +1,404 @@
+syntax = "proto3";
+
+package payment;
+import "google/protobuf/struct.proto";
+option go_package = "./pkg/pb";
+
+service PaymentService {
+  rpc MakeCollection(MakeCollectionRequest) returns (MakeCollectionResponse) {}
+  rpc SendPayment(SendPaymentRequest) returns (SendPaymentResponse) {}
+  rpc CollectionCallback(CollectionCallbackRequest) returns (CollectionCallbackResponse) {}
+  rpc PaymentCallback(PaymentCallbackRequest) returns (PaymentCallbackResponse) {}
+  rpc CheckSubscription(CheckSubscriptionRequest) returns (CheckSubscriptionResponse) {}
+  rpc CheckPhoneSubscription(CheckSubscriptionRequest) returns (CheckSubscriptionResponse) {}
+  rpc GetUserNotification(GetUserNotificationRequest) returns (GetUserNotificationResponse) {}
+  rpc GetAllPaymentTransactions(GetAllPaymentTransactionsRequest) returns (GetAllPaymentTransactionsResponse) {}
+  rpc DeletePayment(DeletePaymentRequest) returns (DeletePaymentResponse) {}
+  rpc CheckPropertyHoldSubscription(CheckPropertyHoldSubscriptionRequest) returns (CheckPropertyHoldSubscriptionResponse) {}
+  rpc CheckVoucherValidity(CheckVoucherValidityRequest) returns (CheckVoucherValidityResponse) {}
+  rpc RedeemVoucher(RedeemVoucherRequest) returns (RedeemVoucherResponse) {}
+  rpc AppReferral(AppReferralRequest) returns (AppReferralResponse) {}
+  rpc GetMyAppReferral(GetMyAppReferralRequest) returns (GetMyAppReferralResponse) {}
+  rpc UpdateReferreral(UpdateReferreralRequest) returns (UpdateReferreralResponse) {}
+  rpc StreamNewPaymentNotifications (stream StreamNewPaymentNotificationsRequest) returns (stream PaymentTransaction);
+  rpc GetDashboardMetrics(GetDashboardMetricsRequest) returns (GetDashboardMetricsResponse) {}
+  rpc AddLandlordRevenue(AddLandlordRevenueRequest) returns (AddLandlordRevenueResponse) {}
+  rpc GetLandlordRevenue(GetLandlordRevenueRequest) returns (GetLandlordRevenueResponse) {}
+}
+
+//retrieve single landlord revenue
+message GetLandlordRevenueRequest {
+    string landlord_id = 1;
+  }
+
+message GetLandlordRevenueResponse {
+    int64 status = 1;
+    string error = 2;
+    string message = 3;
+    double total_revenue = 4;    
+}
+
+message AddLandlordRevenueRequest {
+  string landlord_id = 1;
+  string property_id = 2;
+  string currency = 3;
+  double amount = 4;
+  string reason = 5;
+  int32 transaction_id = 6;
+  string transaction_type = 7;  
+  string transaction_date = 8;
+  string status = 9;
+}
+
+message AddLandlordRevenueResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message StreamNewPaymentNotificationsRequest {
+  string user_id = 1;
+}
+
+//check house tour subscription
+message CheckPropertyHoldSubscriptionRequest {
+  string user_id = 1;
+  string property_id = 2;
+  string subscription_type = 3;
+}
+
+message CheckPropertyHoldSubscriptionResponse {
+  int64 status = 1;
+  bool is_subscription_active =2;
+  string subscription_type =3;
+  string days_left = 4;
+  string error = 5;
+  string id = 6;
+  string message = 7;
+}
+
+///send payment to landlord
+message SendPaymentRequest {
+  message Metadata {
+    string user_id = 1;
+    optional string property_id = 2;
+    optional string voucher_code = 3;
+    string payment_reason = 4;
+    optional string application_id = 5;
+  }
+  string phone_number = 1;
+  double amount_to_pay = 2;
+  string currency = 3;
+  Metadata metadata = 4;
+  string first_name =5;
+  string last_name = 6;
+  string payment_type = 7;
+  string description = 8;
+}
+
+message SendPaymentResponse {
+  int64 status = 1;
+  string error = 2;
+  string id = 3;
+  string message = 4;
+}
+
+///make payment from Enyumba user
+message MakeCollectionRequest {
+  message Metadata {
+    string user_id = 1;
+    string property_id = 2;
+    string payment_reason = 3;
+    optional int32 installment_count = 4;
+    optional string application_id = 5;
+    optional string tour_date = 6;
+    optional int32 tour_type = 7;
+    optional string voucher_code = 8;
+  }
+  string phone_number = 1;
+  double amount_to_pay = 2;
+  string currency = 3;
+  Metadata metadata = 4;
+}
+
+message MakeCollectionResponse {
+  int64 status = 1;
+  string error = 2;
+  string id = 3;
+  string message = 4;
+}
+
+//callback after paying to landlord
+message PaymentCallbackRequest {
+  message Hook {
+    int32 id = 1;
+    string created = 2;
+    string updated = 3;
+    string event = 4;
+    string target = 5;
+    int32 user = 6;
+  }
+  message Metadata {
+    string user_id = 1;
+    string property_id = 2;
+    string payment_reason = 3;
+    optional string voucher_code = 4;
+    optional string application_id = 5;
+  }
+  message Data {
+    int32 id = 1;
+    int32 organization = 2;
+    string amount = 3;
+    string currency = 4;
+    string payment_type = 5;
+    Metadata metadata = 6;
+    string description = 7;
+    string phonenumber = 8;
+    string state = 9;
+    string last_error = 10;
+    string rejected_reason = 11;
+    string rejected_by = 12;
+    string rejected_time = 13;
+    string cancelled_reason = 14;
+    string cancelled_by = 15;
+    string cancelled_time = 16;
+    string created = 17;
+    int32 author = 18;
+    string modified = 19;
+    // int32 updated_by = 20;
+    string start_date = 20;
+    string mfs_code = 21;
+    string remote_transaction_id = 22;
+  }
+
+  Hook hook = 1;
+  Data data = 2;
+}
+
+message PaymentCallbackResponse {
+  int64 status = 1;
+  string error = 2;
+  string id = 3;
+  string message = 4;
+  bool payment_status = 5;
+}
+
+//check house tour subscription
+message CheckSubscriptionRequest {
+  string user_id = 1;
+  string property_id = 2;
+  string subscription_type = 3;
+}
+
+message CheckSubscriptionResponse {
+  int64 status = 1;
+  bool is_subscription_active =2;
+  string subscription_type =3;
+  string days_left = 4;
+  string error = 5;
+  string id = 6;
+  string message = 7;
+}
+
+//cllection callback from user
+message CollectionCallbackRequest {
+  message Hook {
+    int32 id = 1;
+    string created = 2;
+    string updated = 3;
+    string event = 4;
+    string target = 5;
+    int32 user = 6;
+  }
+  message Metadata {
+    string user_id = 1;
+    string property_id = 2;
+    string payment_reason = 3;
+    string installment_count = 4;
+    string application_id = 5;
+    string tour_date = 6;
+    string tour_type = 7;
+    string voucher_code = 8;
+  }
+  message Data {
+    int32 id = 1;
+    int32 organization = 2;
+    string amount = 3;
+    string currency = 4;
+    string payment_type = 5;
+    Metadata metadata = 6;
+    string description = 7;
+    string phonenumber = 8;
+    string status = 9;
+    string last_error = 10;
+    string rejected_reason = 11;
+    string rejected_by = 12;
+    string rejected_time = 13;
+    string cancelled_reason = 14;
+    string cancelled_by = 15;
+    string cancelled_time = 16;
+    string created = 17;
+    int32 author = 18;
+    string modified = 19;
+    int64 updated_by = 20;
+    string start_date = 21;
+    string mfscode = 22;
+  }
+
+  Hook hook = 1;
+  Data data = 2;
+}
+
+message CollectionCallbackResponse{
+  int64 status = 1;
+  string error = 2;
+  string id = 3;
+  string message = 4;
+  bool payment_status = 5;
+}
+
+  // get single user data
+message GetUserNotificationRequest {
+    string user_id = 1;
+  }
+
+message PaymentTransaction {
+    string id = 1;
+    string property_id = 2;
+    string user_id = 3;
+    double amount = 4;
+    string currency = 5;
+    string transaction_type  = 6;
+    string phone_number = 7;
+    string reason = 8;
+    string transaction_date = 9;
+    string expiry_date = 10;
+    string status = 11;
+    string paid_by_name = 12;
+    string paid_by_photo = 13;
+    int32 transaction_id = 14;
+  }
+
+message GetUserNotificationResponse {
+    int64 status = 1;
+    string error = 2;
+    string message = 3;
+    repeated PaymentTransaction paymentTransactions = 4;
+}
+
+message GetAllPaymentTransactionsRequest {
+
+}
+
+message GetAllPaymentTransactionsResponse {
+    int64 status = 1;
+    string error = 2;
+    string message = 3;
+    repeated PaymentTransaction paymentTransactions = 4;
+}
+
+message DeletePaymentRequest {
+    string user_id = 1;
+}
+
+message DeletePaymentResponse {
+    int64 status = 1;
+    string error = 2;
+    string message = 3;
+}
+
+message CheckVoucherValidityRequest {
+  string user_id = 1;
+  string voucher_code = 2;
+  double amount_to_pay = 3;
+}
+
+message CheckVoucherValidityResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  bool is_voucher_valid = 4;
+  double voucher_amount = 5;
+  string voucher_currency = 6;
+  double amount_to_pay = 7;
+  double amount_to_pay_after_voucher = 8;
+  double percentage_discount = 9;
+}
+
+message RedeemVoucherRequest {
+  string user_id = 1;
+  string voucher_code = 2;
+  double amount_to_pay = 3;
+}
+
+message RedeemVoucherResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  bool is_voucher_valid = 4;
+  double voucher_amount = 5;
+  string voucher_currency = 6;
+  double amount_to_pay = 7;
+  double amount_to_pay_after_voucher = 8;
+  double percentage_discount = 9;
+}
+
+message MyAppReferrals {
+  string invited_user_id = 1;
+  string currency = 2;
+  double earning = 3;
+  string status = 4;
+  string referral_date = 5;
+}
+
+message AppReferralRequest {
+  string user_id = 1;
+  string invited_user_id = 2;
+  string device_id = 3;
+  string currency = 4;
+  double earning = 5;
+  string status = 6;
+}
+
+message AppReferralResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  string referral_record_id = 4;
+}
+
+message GetMyAppReferralRequest {
+  string user_id = 1;
+}
+
+message GetMyAppReferralResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  double total_earning = 4;
+  repeated MyAppReferrals my_appReferrals = 5;
+}
+
+message UpdateReferreralRequest {
+  string referral_record_id = 1;
+  string user_id = 2;
+  string status = 3;
+  bool is_payment_made = 4;
+}
+
+message UpdateReferreralResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message GetDashboardMetricsRequest {
+  string user_Id = 1;
+}
+
+message GetDashboardMetricsResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  google.protobuf.Struct data =4;
+}
