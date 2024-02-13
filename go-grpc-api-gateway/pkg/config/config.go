@@ -9,7 +9,6 @@ import (
 type Config struct {
     Port              string
     AuthSvcUrl        string
-    PropertySvcUrl    string
     PaymentSvcUrl     string
     ApplicationSvcUrl string
 }
@@ -26,7 +25,6 @@ func LoadConfig() (*Config, error) {
     config := &Config{
         Port:              os.Getenv("PORT"),
         AuthSvcUrl:        os.Getenv("AUTH_SVC_URL"),
-        PropertySvcUrl:    os.Getenv("PROPERTY_SVC_URL"),
         PaymentSvcUrl:     os.Getenv("PAYMENT_SVC_URL"),
         ApplicationSvcUrl: os.Getenv("APPLICATION_SVC_URL"),
     }
