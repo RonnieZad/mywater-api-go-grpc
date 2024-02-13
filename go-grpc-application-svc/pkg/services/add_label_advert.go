@@ -21,7 +21,7 @@ func (s *Server) AddLabelAdvert(ctx context.Context, req *pb.AddLabelAdvertReque
 	advert.Id = uuid.New()
 	advert.AdvertId = advertId
 	advert.AdvertiserId = req.AdvertiserId
-	advert.RewardPoint = 2
+	advert.RewardPoint = 100
 	advert.AdvertPublicUrl = req.AdvertPublicUrl
 	advert.Promotion = req.PromotionText
 	advert.PromotionDescription = req.PromotionDescription
