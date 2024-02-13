@@ -33,3 +33,13 @@ func (c *AuthServiceClient) GetUser(UserId string) (*pb.GetUserResponse, error) 
 
 	return c.Client.GetUser(context.Background(), req)
 }
+
+func (c *AuthServiceClient) GetUserClient(UserId string) (*pb.GetUserResponse, error) {
+	req := &pb.GetUserRequest{
+		UserId: UserId,
+	}
+
+	return c.Client.GetUser(context.Background(), req)
+}
+
+
