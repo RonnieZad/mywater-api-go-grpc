@@ -2895,7 +2895,7 @@ var file_pkg_pb_auth_proto_rawDesc = []byte{
 	0x72, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x04, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x19, 0x0a, 0x08, 0x69,
 	0x73, 0x5f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x69,
-	0x73, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x32, 0xff, 0x09, 0x0a, 0x0b, 0x41, 0x75, 0x74, 0x68, 0x53,
+	0x73, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x32, 0xbf, 0x0a, 0x0a, 0x0b, 0x41, 0x75, 0x74, 0x68, 0x53,
 	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x68, 0x0a, 0x17, 0x50, 0x68, 0x6f, 0x6e, 0x65, 0x4e,
 	0x75, 0x6d, 0x62, 0x65, 0x72, 0x56, 0x65, 0x72, 0x69, 0x66, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f,
 	0x6e, 0x12, 0x24, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x50, 0x68, 0x6f, 0x6e, 0x65, 0x4e, 0x75,
@@ -2919,6 +2919,10 @@ var file_pkg_pb_auth_proto_rawDesc = []byte{
 	0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x13, 0x2e, 0x61, 0x75, 0x74, 0x68,
 	0x2e, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00,
 	0x12, 0x38, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x12, 0x14, 0x2e, 0x61, 0x75,
+	0x74, 0x68, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x15, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x3e, 0x0a, 0x0d, 0x47, 0x65,
+	0x74, 0x55, 0x73, 0x65, 0x72, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x12, 0x14, 0x2e, 0x61, 0x75,
 	0x74, 0x68, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
 	0x74, 0x1a, 0x15, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x3b, 0x0a, 0x08, 0x56, 0x61,
@@ -3044,35 +3048,37 @@ var file_pkg_pb_auth_proto_depIdxs = []int32{
 	4,  // 9: auth.AuthService.Register:input_type -> auth.RegisterRequest
 	6,  // 10: auth.AuthService.Login:input_type -> auth.LoginRequest
 	8,  // 11: auth.AuthService.GetUser:input_type -> auth.GetUserRequest
-	25, // 12: auth.AuthService.Validate:input_type -> auth.ValidateRequest
-	11, // 13: auth.AuthService.ResetPassword:input_type -> auth.ResetPasswordRequest
-	13, // 14: auth.AuthService.VerifyResetToken:input_type -> auth.VerifyResetTokenRequest
-	15, // 15: auth.AuthService.UpdatePassword:input_type -> auth.UpdatePasswordRequest
-	17, // 16: auth.AuthService.ResendOTP:input_type -> auth.ResendOTPRequest
-	19, // 17: auth.AuthService.UpdatePhoneNumber:input_type -> auth.UpdatePhoneNumberRequest
-	21, // 18: auth.AuthService.DeactivateUser:input_type -> auth.DeactivateUserRequest
-	23, // 19: auth.AuthService.DeleteUser:input_type -> auth.DeleteUserRequest
-	27, // 20: auth.AuthService.UpdateDocument:input_type -> auth.UpdateDocumentRequest
-	29, // 21: auth.AuthService.KYCVerificationResultCallback:input_type -> auth.KYCVerificationResultRequest
-	31, // 22: auth.AuthService.ValidateEmail:input_type -> auth.ValidateEmailRequest
-	1,  // 23: auth.AuthService.PhoneNumberVerification:output_type -> auth.PhoneNumberVerificationResponse
-	3,  // 24: auth.AuthService.PhoneNumberVerificationWithOTP:output_type -> auth.PhoneNumberVerificationWithOTPResponse
-	5,  // 25: auth.AuthService.Register:output_type -> auth.RegisterResponse
-	7,  // 26: auth.AuthService.Login:output_type -> auth.LoginResponse
-	10, // 27: auth.AuthService.GetUser:output_type -> auth.GetUserResponse
-	26, // 28: auth.AuthService.Validate:output_type -> auth.ValidateResponse
-	12, // 29: auth.AuthService.ResetPassword:output_type -> auth.ResetPasswordResponse
-	14, // 30: auth.AuthService.VerifyResetToken:output_type -> auth.VerifyResetTokenResponse
-	16, // 31: auth.AuthService.UpdatePassword:output_type -> auth.UpdatePasswordResponse
-	18, // 32: auth.AuthService.ResendOTP:output_type -> auth.ResendOTPResponse
-	20, // 33: auth.AuthService.UpdatePhoneNumber:output_type -> auth.UpdatePhoneNumberResponse
-	22, // 34: auth.AuthService.DeactivateUser:output_type -> auth.DeactivateUserResponse
-	24, // 35: auth.AuthService.DeleteUser:output_type -> auth.DeleteUserResponse
-	28, // 36: auth.AuthService.UpdateDocument:output_type -> auth.UpdateDocumentResponse
-	30, // 37: auth.AuthService.KYCVerificationResultCallback:output_type -> auth.KYCVerificationResultResponse
-	32, // 38: auth.AuthService.ValidateEmail:output_type -> auth.ValidateEmailResponse
-	23, // [23:39] is the sub-list for method output_type
-	7,  // [7:23] is the sub-list for method input_type
+	8,  // 12: auth.AuthService.GetUserClient:input_type -> auth.GetUserRequest
+	25, // 13: auth.AuthService.Validate:input_type -> auth.ValidateRequest
+	11, // 14: auth.AuthService.ResetPassword:input_type -> auth.ResetPasswordRequest
+	13, // 15: auth.AuthService.VerifyResetToken:input_type -> auth.VerifyResetTokenRequest
+	15, // 16: auth.AuthService.UpdatePassword:input_type -> auth.UpdatePasswordRequest
+	17, // 17: auth.AuthService.ResendOTP:input_type -> auth.ResendOTPRequest
+	19, // 18: auth.AuthService.UpdatePhoneNumber:input_type -> auth.UpdatePhoneNumberRequest
+	21, // 19: auth.AuthService.DeactivateUser:input_type -> auth.DeactivateUserRequest
+	23, // 20: auth.AuthService.DeleteUser:input_type -> auth.DeleteUserRequest
+	27, // 21: auth.AuthService.UpdateDocument:input_type -> auth.UpdateDocumentRequest
+	29, // 22: auth.AuthService.KYCVerificationResultCallback:input_type -> auth.KYCVerificationResultRequest
+	31, // 23: auth.AuthService.ValidateEmail:input_type -> auth.ValidateEmailRequest
+	1,  // 24: auth.AuthService.PhoneNumberVerification:output_type -> auth.PhoneNumberVerificationResponse
+	3,  // 25: auth.AuthService.PhoneNumberVerificationWithOTP:output_type -> auth.PhoneNumberVerificationWithOTPResponse
+	5,  // 26: auth.AuthService.Register:output_type -> auth.RegisterResponse
+	7,  // 27: auth.AuthService.Login:output_type -> auth.LoginResponse
+	10, // 28: auth.AuthService.GetUser:output_type -> auth.GetUserResponse
+	10, // 29: auth.AuthService.GetUserClient:output_type -> auth.GetUserResponse
+	26, // 30: auth.AuthService.Validate:output_type -> auth.ValidateResponse
+	12, // 31: auth.AuthService.ResetPassword:output_type -> auth.ResetPasswordResponse
+	14, // 32: auth.AuthService.VerifyResetToken:output_type -> auth.VerifyResetTokenResponse
+	16, // 33: auth.AuthService.UpdatePassword:output_type -> auth.UpdatePasswordResponse
+	18, // 34: auth.AuthService.ResendOTP:output_type -> auth.ResendOTPResponse
+	20, // 35: auth.AuthService.UpdatePhoneNumber:output_type -> auth.UpdatePhoneNumberResponse
+	22, // 36: auth.AuthService.DeactivateUser:output_type -> auth.DeactivateUserResponse
+	24, // 37: auth.AuthService.DeleteUser:output_type -> auth.DeleteUserResponse
+	28, // 38: auth.AuthService.UpdateDocument:output_type -> auth.UpdateDocumentResponse
+	30, // 39: auth.AuthService.KYCVerificationResultCallback:output_type -> auth.KYCVerificationResultResponse
+	32, // 40: auth.AuthService.ValidateEmail:output_type -> auth.ValidateEmailResponse
+	24, // [24:41] is the sub-list for method output_type
+	7,  // [7:24] is the sub-list for method input_type
 	7,  // [7:7] is the sub-list for extension type_name
 	7,  // [7:7] is the sub-list for extension extendee
 	0,  // [0:7] is the sub-list for field type_name
