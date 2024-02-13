@@ -14,6 +14,8 @@ func RegisterRoutes(r *gin.Engine, c *config.Config) *ServiceClient {
 	routes := r.Group("/auth")
 	routes.POST("/account_registration", svc.Register)
 	routes.POST("/account_login", svc.Login)
+	routes.POST("/account_registration_client", svc.RegisterUserClient)
+	routes.POST("/account_login_client", svc.LoginUserClient)
 	routes.POST("/request_account_edit", svc.EditAccount)
 	routes.POST("/phone_number_verification", svc.PhoneNumberVerification)
 	routes.POST("/verify_phone_number_with_otp", svc.PhoneNumberVerificationWithOTP)
@@ -131,6 +133,11 @@ func (svc *ServiceClient) EditAccount(ctx *gin.Context) {
 	routes.EditAccount(ctx, svc.Client)
 }
 
-func (svc *ServiceClient) GetUserMetrics(ctx *gin.Context) {
-	routes.GetUserMetrics(ctx, svc.Client)
+func (svc *ServiceClient) RegisterUserClient(ctx *gin.Context) {
+	routes.RegisterUserClient(ctx, svc.Client)
 }
+
+func (svc *ServiceClient) LoginUserClient(ctx *gin.Context) {
+	routes.LoginUserClient(ctx, svc.Client)
+}
+
