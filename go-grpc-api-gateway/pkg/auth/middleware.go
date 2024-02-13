@@ -2,11 +2,12 @@ package auth
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/RonnieZad/nyumba-go-grpc-project/api-gateway/pkg/auth/pb"
+	"github.com/gin-gonic/gin"
 )
 
 type AuthMiddlewareConfig struct {
@@ -21,6 +22,7 @@ func (c *AuthMiddlewareConfig) AuthRequired(ctx *gin.Context) {
 	authorization := ctx.Request.Header.Get("authorization")
 
 	if authorization == "" {
+		fmt.Println("No authorization header..issue here")
 		ctx.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
@@ -28,6 +30,7 @@ func (c *AuthMiddlewareConfig) AuthRequired(ctx *gin.Context) {
 	token := strings.Split(authorization, "Bearer ")
 
 	if len(token) < 2 {
+		fmt.Println("Token not found")
 		ctx.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
@@ -37,6 +40,7 @@ func (c *AuthMiddlewareConfig) AuthRequired(ctx *gin.Context) {
 	})
 
 	if err != nil || res.Status != http.StatusOK {
+		fmt.Println("Error validating token")
 		ctx.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
