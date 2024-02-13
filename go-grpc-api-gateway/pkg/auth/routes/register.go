@@ -13,7 +13,7 @@ type RegisterRequestBody struct {
 	EmailAddress       string `json:"email_address"`
 	Password           string `json:"password"`
 	PhoneNumber        string `json:"phone_number"`
-	Name               string `json:"user_name"`	
+	Name               string `json:"user_name"`
 	Role               string `json:"role"`
 	CompanyName        string `json:"company_name"`
 	CompanyLogo        string `json:"company_logo"`
@@ -46,6 +46,30 @@ func Register(ctx *gin.Context, c pb.AuthServiceClient) {
 		CompanyPhone:       body.CompanyPhone,
 		CompanyAddress:     body.CompanyAddress,
 		CompanyDescription: body.CompanyDescription,
+	})
+
+	if err != nil {
+		ctx.AbortWithError(http.StatusBadGateway, err)
+		return
+	}
+
+	ctx.JSON(int(res.Status), &res)
+}
+
+func RegisterUserClient(ctx *gin.Context, c pb.AuthServiceClient) {
+	body := RegisterRequestBody{}
+
+	if err := ctx.BindJSON(&body); err != nil {
+		ctx.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	res, err := c.RegisterUserClient(context.Background(), &pb.RegisterRequest{
+		EmailAddress: body.EmailAddress,
+		Password:     body.Password,
+		PhoneNumber:  body.PhoneNumber,
+		Role:         body.Role,
+		Name:         body.Name,
 	})
 
 	if err != nil {
