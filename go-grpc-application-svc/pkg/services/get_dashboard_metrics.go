@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/RonnieZad/nyumba-go-grpc-project/application-svc/pkg/models"
@@ -14,84 +15,81 @@ import (
 func (s *Server) GetCompanyDashboardAnalytic(ctx context.Context, req *pb.GetCompanyDashboardAnalyticRequest) (*pb.GetCompanyDashboardAnalyticResponse, error) {
 
 	advertisements, err := s.getAdvertisementsForAdvertiser(req.AdvertiserId)
-    if err != nil {
-        return nil, err
-    }
+	if err != nil {
+		return nil, err
+	}
 
-    // Create a map to store statistics for each advertisement
+	// Create a map to store statistics for each advertisement
 	advertStats := make([]*structpb.Struct, 0)
 
 	for _, advert := range advertisements {
-        dailyCounts, err := s.getLabelScansCountForDay(req.AdvertiserId, advert.AdvertId)
-        if err != nil {
-            return nil, err
-        }
+		dailyCounts, err := s.getLabelScansCountForDay(req.AdvertiserId, advert.AdvertId)
+		if err != nil {
+			return nil, err
+		}
 
-        weeklyCounts, err := s.getLabelScansCountWeekly(req.AdvertiserId, advert.AdvertId)
-        if err != nil {
-            return nil, err
-        }
+		weeklyCounts, err := s.getLabelScansCountWeekly(req.AdvertiserId, advert.AdvertId)
+		if err != nil {
+			return nil, err
+		}
 
-        monthlyCounts, err := s.getLabelScansCountMonthly(req.AdvertiserId, advert.AdvertId)
-        if err != nil {
-            return nil, err
-        }
+		monthlyCounts, err := s.getLabelScansCountMonthly(req.AdvertiserId, advert.AdvertId)
+		if err != nil {
+			return nil, err
+		}
 
-        yearlyCounts, err := s.getLabelScansCountYearly(req.AdvertiserId, advert.AdvertId)
-        if err != nil {
-            return nil, err
-        }
+		yearlyCounts, err := s.getLabelScansCountYearly(req.AdvertiserId, advert.AdvertId)
+		if err != nil {
+			return nil, err
+		}
 
-        // Convert map values to structpb.Values
-        dailyValues := mapToStructpbValues(dailyCounts)
-        weeklyValues := mapToStructpbValues(weeklyCounts)
-        monthlyValues := mapToStructpbValues(monthlyCounts)
-        yearlyValues := mapToStructpbValues(yearlyCounts)
+		// Convert map values to structpb.Values
+		dailyValues := mapToStructpbValues(dailyCounts)
+		weeklyValues := mapToStructpbValues(weeklyCounts)
+		monthlyValues := mapToStructpbValues(monthlyCounts)
+		yearlyValues := mapToStructpbValues(yearlyCounts)
 
-        // Create a struct for each advertisement
-        advertStruct := &structpb.Struct{
-            Fields: map[string]*structpb.Value{
-                "daily": {
-                    Kind: &structpb.Value_StructValue{
-                        StructValue: &structpb.Struct{
-                            Fields: dailyValues,
-                        },
-                    },
-                },
-                "weekly": {
-                    Kind: &structpb.Value_StructValue{
-                        StructValue: &structpb.Struct{
-                            Fields: weeklyValues,
-                        },
-                    },
-                },
-                "monthly": {
-                    Kind: &structpb.Value_StructValue{
-                        StructValue: &structpb.Struct{
-                            Fields: monthlyValues,
-                        },
-                    },
-                },
-                "yearly": {
-                    Kind: &structpb.Value_StructValue{
-                        StructValue: &structpb.Struct{
-                            Fields: yearlyValues,
-                        },
-                    },
-                },
-            },
-			
-			
-        }
+		// Create a struct for each advertisement
+		advertStruct := &structpb.Struct{
+			Fields: map[string]*structpb.Value{
+				"daily": {
+					Kind: &structpb.Value_StructValue{
+						StructValue: &structpb.Struct{
+							Fields: dailyValues,
+						},
+					},
+				},
+				"weekly": {
+					Kind: &structpb.Value_StructValue{
+						StructValue: &structpb.Struct{
+							Fields: weeklyValues,
+						},
+					},
+				},
+				"monthly": {
+					Kind: &structpb.Value_StructValue{
+						StructValue: &structpb.Struct{
+							Fields: monthlyValues,
+						},
+					},
+				},
+				"yearly": {
+					Kind: &structpb.Value_StructValue{
+						StructValue: &structpb.Struct{
+							Fields: yearlyValues,
+						},
+					},
+				},
+			},
+		}
 		advertStats = append(advertStats, advertStruct)
-		
-    }
 
-
+	}
 
 	// Respond with the fetched statistics for daily, weekly, and monthly scans
 	return &pb.GetCompanyDashboardAnalyticResponse{
-		Message: "Metrics retrieved successfully",
+		Status:    http.StatusOK,
+		Message:   "Metrics retrieved successfully",
 		Analytics: advertStats,
 	}, nil
 }
@@ -277,19 +275,18 @@ func (s *Server) getIntervalTime(index int64) (time.Time, time.Time) {
 	}
 }
 
-
 func (s *Server) getAdvertisementsForAdvertiser(advertiserID string) ([]models.Advert, error) {
-    var adScans []models.Advert
+	var adScans []models.Advert
 
-    // Assuming you have a model named Advertisement
-    err := s.H.DB.Model(&models.Advert{}).
-        Where("advertiser_id = ?", advertiserID).
-        Find(&adScans).
-        Error
+	// Assuming you have a model named Advertisement
+	err := s.H.DB.Model(&models.Advert{}).
+		Where("advertiser_id = ?", advertiserID).Order("created_at DESC").
+		Find(&adScans).
+		Error
 
-    if err != nil {
-        return nil, err
-    }
+	if err != nil {
+		return nil, err
+	}
 
-    return adScans, nil
+	return adScans, nil
 }
