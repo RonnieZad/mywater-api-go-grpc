@@ -11,7 +11,10 @@ service AuthService {
   rpc PhoneNumberVerificationWithOTP(PhoneNumberVerificationWithOTPRequest) returns (PhoneNumberVerificationWithOTPResponse) {}
   rpc Register(RegisterRequest) returns (RegisterResponse) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc RegisterUserClient(RegisterRequest) returns (RegisterResponse) {}
+  rpc LoginUserClient(LoginRequest) returns (LoginResponse) {}
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
+  rpc GetUserClient(GetUserRequest) returns (GetUserResponse) {}
   rpc EditAccount(EditAccountRequest) returns (EditAccountResponse) {}
   rpc Validate(ValidateRequest) returns (ValidateResponse) {}
   rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
