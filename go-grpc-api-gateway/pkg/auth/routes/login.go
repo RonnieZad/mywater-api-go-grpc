@@ -37,3 +37,26 @@ func Login(ctx *gin.Context, c pb.AuthServiceClient) {
 
 	ctx.JSON(http.StatusCreated, &res)
 }
+
+func LoginUserClient(ctx *gin.Context, c pb.AuthServiceClient) {
+	b := LoginRequestBody{}
+
+	if err := ctx.BindJSON(&b); err != nil {
+		ctx.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	res, err := c.LoginUserClient(context.Background(), &pb.LoginRequest{
+		EmailAddress: b.EmailAddress,
+		Password:     b.Password,
+		PhoneNumber:  b.PhoneNumber,
+		Role:         b.Role,
+	})
+
+	if err != nil {
+		ctx.AbortWithError(http.StatusBadGateway, err)
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, &res)
+}
