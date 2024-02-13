@@ -12,6 +12,7 @@ service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
+  rpc GetUserClient(GetUserRequest) returns (GetUserResponse) {}
   rpc Validate(ValidateRequest) returns (ValidateResponse) {}
   rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
   rpc VerifyResetToken(VerifyResetTokenRequest) returns (VerifyResetTokenResponse) {}
