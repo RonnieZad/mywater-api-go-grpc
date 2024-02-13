@@ -7,6 +7,7 @@ import (
 
 	"github.com/RonnieZad/nyumba-go-grpc-project/application-svc/pkg/models"
 	"github.com/RonnieZad/nyumba-go-grpc-project/application-svc/pkg/pb"
+	"github.com/RonnieZad/nyumba-go-grpc-project/application-svc/pkg/utils"
 	"github.com/google/uuid"
 )
 
@@ -40,6 +41,9 @@ func (s *Server) AddLabelScan(ctx context.Context, req *pb.AddLabelScanRequest) 
 		advert.ScanCount += 1
 
 		s.H.DB.Save(&advert)
+
+		//emit websocket to listening subscribed clients
+		utils.SendWebsocket(ctx, "scanAdChannel")
 
 		if result := s.H.DB.Create(&labelScan); result.Error != nil {
 			return &pb.AddLabelScanResponse{
