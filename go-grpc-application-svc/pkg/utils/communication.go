@@ -2,17 +2,36 @@ package utils
 
 import (
 	// "crypto/rand"
+	"context"
 	"fmt"
-	"github.com/resendlabs/resend-go"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
 
-	
+	"github.com/ably/ably-go/ably"
+	"github.com/resendlabs/resend-go"
+
 	"math/rand"
 )
+
+func SendWebsocket(ctx context.Context, channelName string) {
+	client, err := ably.NewRealtime(ably.WithKey("EIgGUg.TJrcFQ:ucexDmzPxVwZ5VQDrBDGgK3bLjHsWXQsjZTCcoV83Bg"))
+	if err != nil {
+		panic(err)
+	}
+
+	channel := client.Channels.Get(channelName)
+
+	msgJSON := []byte("Ad scan")
+
+	err = channel.Publish(ctx, "message", msgJSON)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Message published successfully.")
+}
 
 func SendSMS(to string, message string) error {
 	link := "https://api.africastalking.com/version1/messaging"
