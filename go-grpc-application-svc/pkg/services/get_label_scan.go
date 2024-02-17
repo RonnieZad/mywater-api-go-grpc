@@ -2,7 +2,9 @@ package services
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"gorm.io/gorm"
 	"net/http"
 
 	"github.com/RonnieZad/nyumba-go-grpc-project/application-svc/pkg/models"
@@ -12,37 +14,34 @@ import (
 func (s *Server) GetUserLabelScan(ctx context.Context, req *pb.GetUserLabelScanRequest) (*pb.GetUserLabelScanResponse, error) {
 	// Find user by ID
 	var labelScans []models.LabelScan
-	var advert models.Advert
-	
 
 	if result := s.H.DB.Where("user_uid = ?", req.UserId).Order("created_at DESC").Find(&labelScans); result.Error != nil {
-		return &pb.GetUserLabelScanResponse{
-			Status: http.StatusNotFound,
-			Error:  "No scans",
-		}, nil
-	}
-
-	totalPoints := int64(0)
-	// Convert payment transactions to protobuf message format
-	var labelScansPB []*pb.LabelAdvert
-	for _, labelScanData := range labelScans {
-
-		if result := s.H.DB.Where("advert_id = ?", labelScanData.AdvertId).Find(&advert); result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return &pb.GetUserLabelScanResponse{
 				Status: http.StatusNotFound,
 				Error:  "No scans",
 			}, nil
 		}
+		return nil, result.Error
+	}
+
+	var labelScansPB []*pb.LabelAdvert
+	totalPoints := int64(0)
+
+	for _, labelScanData := range labelScans {
+		var advert models.Advert
+		if result := s.H.DB.Where("advert_id = ?", labelScanData.AdvertId).First(&advert); result.Error != nil {
+			if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+				continue // Skip this scan if the advert is not found
+			}
+			return nil, result.Error
+		}
 
 		totalPoints += advert.RewardPoint
 
-		user, error := s.AuthSvc.GetUser(labelScanData.AdvertiserId)
-
-		if error != nil {
-			fmt.Print(error)
-
-		} else if user.Status >= http.StatusNotFound {
-			fmt.Print("no related user found")
+		user, err := s.AuthSvc.GetUser(labelScanData.AdvertiserId)
+		if err != nil {
+			return nil, err
 		}
 
 		labelScansPB = append(labelScansPB, &pb.LabelAdvert{
@@ -62,9 +61,9 @@ func (s *Server) GetUserLabelScan(ctx context.Context, req *pb.GetUserLabelScanR
 	}
 
 	return &pb.GetUserLabelScanResponse{
-		Status:  http.StatusOK,
-		Message: fmt.Sprintf("Found %d scans", len(labelScansPB)),
-		Scans:   labelScansPB,
-		TotalPoints:  totalPoints,
+		Status:      http.StatusOK,
+		Message:     fmt.Sprintf("Found %d scans", len(labelScansPB)),
+		Scans:       labelScansPB,
+		TotalPoints: totalPoints,
 	}, nil
 }
