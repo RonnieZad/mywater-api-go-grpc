@@ -21,9 +21,11 @@ type Advert struct {
 }
 
 type LabelScan struct {
-	Id           uuid.UUID `json:"id" gorm:"primaryKey"`
-	UserUid      string    `json:"user_uid"`
-	AdvertiserId string    `json:"advertiser_id"`
-	AdvertId     string    `json:"advert_id"`
-	gorm.Model   `json:"-"`
+	Id            uuid.UUID `json:"id" gorm:"primaryKey"`
+	UserUid       string    `json:"user_uid"`
+	AdvertiserId  string    `json:"advertiser_id"`
+	AdvertId      string    `json:"advert_id"`
+	UserLatitude  string    `json:"user_latitude"`
+	UserLongitude string    `json:"user_longitude"`
+	gorm.Model    `json:"-"`
 }

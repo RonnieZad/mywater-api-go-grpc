@@ -45,18 +45,21 @@ func (s *Server) GetUserLabelScan(ctx context.Context, req *pb.GetUserLabelScanR
 		}
 
 		labelScansPB = append(labelScansPB, &pb.LabelAdvert{
-			AdvertId:        labelScanData.AdvertId,
-			AdvertPublicUrl: advert.AdvertPublicUrl,
-			PromotionText:   advert.Promotion,
-			PictureUrl:      advert.PictureUrl,
-			ExpiryDate:      advert.ExpiryDate,
-			CompanyName:     user.Data.CompanyName,
-			CompanyLogo:     user.Data.CompanyLogo,
-			CompanyWebsite:  user.Data.CompanyWebsite,
-			CompanyEmail:    user.Data.CompanyEmail,
-			CompanyPhone:    user.Data.CompanyPhone,
-			CompanyAddress:  user.Data.CompanyAddress,
-			ScanDate:        labelScanData.CreatedAt.Format("2006-01-02 15:04"),
+			AdvertId:             labelScanData.AdvertId,
+			AdvertPublicUrl:      advert.AdvertPublicUrl,
+			PromotionText:        advert.Promotion,
+			RewardPoint:          advert.RewardPoint,
+			PromotionDescription: advert.PromotionDescription,
+			PictureUrl:           advert.PictureUrl,
+			ExpiryDate:           advert.ExpiryDate,
+			CompanyName:          user.Data.CompanyName,
+			CompanyLogo:          user.Data.CompanyLogo,
+			CompanyWebsite:       user.Data.CompanyWebsite,
+			CompanyEmail:         user.Data.CompanyEmail,
+			CompanyPhone:         user.Data.CompanyPhone,
+			CompanyAddress:       user.Data.CompanyAddress,
+			CompanyDescription:   user.Data.CompanyDescription,
+			ScanDate:             labelScanData.CreatedAt.Format("2006-01-02 15:04"),
 		})
 	}
 

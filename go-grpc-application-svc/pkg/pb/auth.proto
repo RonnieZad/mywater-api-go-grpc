@@ -109,6 +109,7 @@ message UserData {
   string company_email = 13;
   string company_phone = 14;
   string company_address = 15;
+  string company_description = 16;
 }
 
 message GetUserResponse {

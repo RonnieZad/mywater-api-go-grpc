@@ -31,6 +31,12 @@ message AddLabelAdvertResponse {
   string message = 3;
 }
 
+
+message CityScan {
+  string city = 1;
+  int32 scan_count = 2;
+}
+
 message GetUserLabelAdvertRequest {
   string advertiser_id = 1;
 }
@@ -59,6 +65,8 @@ message LabelAdvert {
   string scan_date = 14;
   string creation_date = 15;
   int64 scan_count = 16;
+  int64 reward_point = 17; 
+  repeated CityScan city_scans = 18;
 }
 
 //label scans created by consumers
@@ -67,6 +75,8 @@ message AddLabelScanRequest {
   string user_id = 1;
   string advertiser_id = 2;
   string advert_id = 3;    
+  string user_latitude = 4;
+  string user_longitude = 5;
 }
 
 message AddLabelScanResponse {
