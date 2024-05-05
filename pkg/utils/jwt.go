@@ -83,7 +83,7 @@ func GetUserRolesFromToken(authHeader string) ([]string, error) {
 
 	// Parse the token string
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
-		// TODO: Add code here to get the JWT signing key from a secure storage
+
 		// In this example, we are using a hardcoded key for simplicity
 		return []byte("r43t18sc"), nil
 	})
