@@ -1,25 +1,28 @@
 package db
 
 import (
-    "log"
+	"log"
 
-    "github.com/RonnieZad/nyumba-go-grpc-auth-svc/pkg/models"
-    "gorm.io/driver/postgres"
-    "gorm.io/gorm"
+	"github.com/RonnieZad/nyumba-go-grpc-auth-svc/pkg/models"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type Handler struct {
-    DB *gorm.DB
+	DB *gorm.DB
 }
 
 func Init(url string) Handler {
-    db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
 
-    if err != nil {
-        log.Fatalln(err)
-    }
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-    db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.User{}, &models.UserClient{}, &models.PhoneNumberOTP{}, &models.EditAccountRequest{})
+	// db.AutoMigrate(&models.Role{})
+	// db.AutoMigrate(&models.Permission{})
+	// db.AutoMigrate(&models.RolePermission{})
 
-    return Handler{db}
+	return Handler{db}
 }

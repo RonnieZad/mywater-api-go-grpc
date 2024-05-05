@@ -15,7 +15,8 @@ Account can not be deleted, but can be deactivated
 ### END POINTS TO DEVELOP
 - [x] account-registration
 - [x] account-login
-- [ ] verify-account-with-otp
+- [x] verify-phone-number
+- [x] verify-account-with-otp
 - [ ] verify-account-with-id
 - [ ] reset-account-password
 - [ ] update-account

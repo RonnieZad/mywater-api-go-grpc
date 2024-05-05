@@ -1,0 +1,232 @@
+syntax = "proto3";
+
+package payment;
+
+option go_package = "./pkg/pb";
+
+service PaymentService {
+  rpc MakeCollection(MakeCollectionRequest) returns (MakeCollectionResponse) {}
+  rpc SendPayment(SendPaymentRequest) returns (SendPaymentResponse) {}
+  rpc CollectionCallback(CollectionCallbackRequest) returns (CollectionCallbackResponse) {}
+  rpc PaymentCallback(PaymentCallbackRequest) returns (PaymentCallbackResponse) {}
+  rpc CheckSubscription(CheckSubscriptionRequest) returns (CheckSubscriptionResponse) {}
+  rpc CheckPhoneSubscription(CheckSubscriptionRequest) returns (CheckSubscriptionResponse) {}
+  rpc GetUserNotification(GetUserNotificationRequest) returns (GetUserNotificationResponse) {}
+  rpc GetAllPaymentTransactions(GetAllPaymentTransactionsRequest) returns (GetAllPaymentTransactionsResponse) {}
+  rpc DeletePayment(DeletePaymentRequest) returns (DeletePaymentResponse) {}
+}
+
+///send payment to landlord
+message SendPaymentRequest {
+  message Metadata {
+    string user_id = 1;
+    string property_id = 2;
+    string payment_reason = 3;
+  }
+  string phone_number = 1;
+  double amount_to_pay = 2;
+  string currency = 3;
+  Metadata metadata = 4;
+  string first_name =5;
+  string last_name = 6;
+  string payment_type = 7;
+  string description = 8;
+}
+
+message SendPaymentResponse {
+  int64 status = 1;
+  string error = 2;
+  string id = 3;
+  string message = 4;
+}
+
+///make payment from Enyumba user
+message MakeCollectionRequest {
+  message Metadata {
+    string user_id = 1;
+    string property_id = 2;
+    string payment_reason = 3;
+  }
+  string phone_number = 1;
+  double amount_to_pay = 2;
+  string currency = 3;
+  Metadata metadata = 4;
+}
+
+message MakeCollectionResponse {
+  int64 status = 1;
+  string error = 2;
+  string id = 3;
+  string message = 4;
+}
+
+//callback after paying to landlord
+message PaymentCallbackRequest {
+  message Hook {
+    int32 id = 1;
+    string created = 2;
+    string updated = 3;
+    string event = 4;
+    string target = 5;
+    int32 user = 6;
+  }
+  message Metadata {
+    string user_id = 1;
+    string property_id = 2;
+    string payment_reason = 3;
+  }
+  message Data {
+    int32 id = 1;
+    int32 organization = 2;
+    string amount = 3;
+    string currency = 4;
+    string payment_type = 5;
+    Metadata metadata = 6;
+    string description = 7;
+    string phone_number = 8;
+    string state = 9;
+    string last_error = 10;
+    string rejected_reason = 11;
+    string rejected_by = 12;
+    string rejected_time = 13;
+    string cancelled_reason = 14;
+    string cancelled_by = 15;
+    string cancelled_time = 16;
+    string created = 17;
+    int32 author = 18;
+    string modified = 19;
+    string updated_by = 20;
+    string start_date = 21;
+    string mfs_code = 22;
+  }
+
+  Hook hook = 1;
+  Data data = 2;
+}
+
+message PaymentCallbackResponse {
+  int64 status = 1;
+  string error = 2;
+  string id = 3;
+  string message = 4;
+  bool payment_status = 5;
+}
+
+//check house tour subscription
+message CheckSubscriptionRequest {
+  string user_id = 1;
+  string property_id = 2;
+  string subscription_type = 3;
+}
+
+message CheckSubscriptionResponse {
+  int64 status = 1;
+  bool is_subscription_active =2;
+  string subscription_type =3;
+  string days_left = 4;
+  string error = 5;
+  string id = 6;
+  string message = 7;
+}
+
+//cllection callback from user
+message CollectionCallbackRequest {
+  message Hook {
+    int32 id = 1;
+    string created = 2;
+    string updated = 3;
+    string event = 4;
+    string target = 5;
+    int32 user = 6;
+  }
+  message Metadata {
+    string user_id = 1;
+    string property_id = 2;
+    string payment_reason = 3;
+  }
+  message Data {
+    int32 id = 1;
+    int32 organization = 2;
+    string amount = 3;
+    string currency = 4;
+    string payment_type = 5;
+    Metadata metadata = 6;
+    string description = 7;
+    string phonenumber = 8;
+    string status = 9;
+    string last_error = 10;
+    string rejected_reason = 11;
+    string rejected_by = 12;
+    string rejected_time = 13;
+    string cancelled_reason = 14;
+    string cancelled_by = 15;
+    string cancelled_time = 16;
+    string created = 17;
+    int32 author = 18;
+    string modified = 19;
+    int64 updated_by = 20;
+    string start_date = 21;
+    string mfscode = 22;
+  }
+
+  Hook hook = 1;
+  Data data = 2;
+}
+
+message CollectionCallbackResponse{
+  int64 status = 1;
+  string error = 2;
+  string id = 3;
+  string message = 4;
+  bool payment_status = 5;
+}
+
+  // get single user data
+message GetUserNotificationRequest {
+    string user_id = 1;
+  }
+
+message PaymentTransaction {
+    string id = 1;
+    string property_id = 2;
+    string user_id = 3;
+    double amount = 4;
+    string currency = 5;
+    string transaction_type  = 6;
+    string phone_number = 7;
+    string reason = 8;
+    string transaction_date = 9;
+    string expiry_date = 10;
+    string status = 11;
+    string paid_by_name = 12;
+    string paid_by_photo = 13;
+
+  }
+
+message GetUserNotificationResponse {
+    int64 status = 1;
+    string error = 2;
+    string message = 3;
+    repeated PaymentTransaction paymentTransactions = 4;
+  }
+
+message GetAllPaymentTransactionsRequest {
+
+}
+
+message GetAllPaymentTransactionsResponse {
+    int64 status = 1;
+    string error = 2;
+    string message = 3;
+    repeated PaymentTransaction paymentTransactions = 4;
+}
+
+message DeletePaymentRequest {
+    string user_id = 1;
+}
+
+message DeletePaymentResponse {
+    int64 status = 1;
+    string error = 2;
+    string message = 3;
+}

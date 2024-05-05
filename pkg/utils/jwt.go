@@ -2,9 +2,12 @@ package utils
 
 import (
 	"errors"
+	"fmt"
+	"strings"
+
+	// "fmt"
 	"time"
 
-	"github.com/RonnieZad/nyumba-go-grpc-auth-svc/pkg/models"
 	"github.com/golang-jwt/jwt"
 )
 
@@ -16,14 +19,15 @@ type JwtWrapper struct {
 
 type jwtClaims struct {
 	jwt.StandardClaims
-	Id    int64
-	Email string
+	AccountId string
+	UserRole  string
 }
 
-func (w *JwtWrapper) GenerateToken(user models.User) (signedToken string, err error) {
+func (w *JwtWrapper) GenerateToken(accountId string, userRole string) (signedToken string, err error) {
+
 	claims := &jwtClaims{
-		Id:    user.ID,
-		Email: user.EmailAddress,
+		AccountId: accountId,
+		UserRole:  userRole,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Hour * time.Duration(w.ExpirationHours)).Unix(),
 			Issuer:    w.Issuer,
@@ -66,4 +70,47 @@ func (w *JwtWrapper) ValidateToken(signedToken string) (claims *jwtClaims, err e
 
 	return claims, nil
 
+}
+
+func GetUserRolesFromToken(authHeader string) ([]string, error) {
+	// Check if the Authorization header starts with "Bearer "
+	if !strings.HasPrefix(authHeader, "Bearer ") {
+		return nil, errors.New("invalid Authorization header format")
+	}
+
+	// Get the token string without the "Bearer " prefix
+	tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
+
+	// Parse the token string
+	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+		// TODO: Add code here to get the JWT signing key from a secure storage
+		// In this example, we are using a hardcoded key for simplicity
+		return []byte("r43t18sc"), nil
+	})
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse token: %v", err)
+	}
+
+	// Check if the token is valid
+	if !token.Valid {
+		return nil, errors.New("invalid token")
+	}
+
+	// Get the "roles" claim from the token
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, errors.New("invalid token claims")
+	}
+
+	// Get the "role" claim from the token
+	userRole, ok := claims["UserRole"].(string)
+	if !ok {
+		return nil, errors.New("missing or invalid 'role' claim")
+	}
+
+	// Convert the "role" claim to a slice of strings
+	rolesStr := []string{userRole}
+
+	return rolesStr, nil
 }
