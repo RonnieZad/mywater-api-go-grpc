@@ -1,0 +1,234 @@
+syntax = "proto3";
+
+package property;
+import "google/protobuf/struct.proto";
+option go_package = "./pkg/pb";
+
+service PropertyService {
+  rpc AddProperty(AddPropertyRequest) returns (AddPropertyResponse) {}
+  rpc ListProperty(ListPropertyRequest) returns (ListPropertyResponse) {}
+  rpc FindOne(FindOneRequest) returns (FindOneResponse) {}
+  rpc AddUserPropertyPreference(AddUserPropertyPreferenceRequest) returns (AddUserPropertyPreferenceResponse) {}
+  rpc AddUserSavedProperty(AddUserSavedPropertyRequest) returns (AddUserSavedPropertyResponse) {}
+  rpc GetUserSavedProperties(GetUserSavedPropertiesRequest) returns (GetUserSavedPropertiesResponse) {}
+  rpc HoldProperty(HoldPropertyRequest) returns (HoldPropertyResponse) {}
+  rpc GetLocksByGroupId(GetLocksByGroupIdRequest) returns (GetLocksByGroupIdResponse) {}
+  rpc DeleteProperty(DeletePropertyRequest) returns (DeletePropertyResponse) {}
+}
+
+message DeletePropertyRequest {
+  string property_id = 1;
+}
+
+message DeletePropertyResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message AddPropertyRequest {
+  string name = 1;
+  int64 property_type = 2;
+  string location_text = 3;
+  double location_coordinates_lat = 4;
+  double location_coordinates_long = 5;
+  double price = 6;
+  string description = 7;
+  int32 feature_bedrooms = 8;
+  int32 feature_bathrooms = 9;
+  int32 feature_size = 10;
+  string cover_photo = 11;
+  google.protobuf.Struct property_about = 12;
+  google.protobuf.Struct property_management = 13;
+  repeated PropertyNearbySchool property_nearby_school = 14;
+  repeated PropertyNeighbourhood property_neighbourhood = 15;
+  repeated PropertyImages property_images = 16;
+  string video_preview = 17;
+}
+
+message AddPropertyResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  int64 id = 4;
+}
+
+message ListPropertyRequest {
+  string user_id = 1;
+}
+
+message ListPropertyResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  repeated Property properties = 4;
+}
+
+// FindOne
+
+message FindOneData {
+  string name = 1;
+  int32 property_type = 2;
+  string property_type_text = 3;
+  string property_reference = 4;
+  string location_text = 5;
+  double location_coordinates_lat = 6;
+  double location_coordinates_long = 7;
+  double rent_price = 8;
+  double service_charge_fee = 9;
+  double agent_fee = 10;
+  double legal_fee = 11;
+  int32 rental_deposit_period = 12;
+  string description = 13;
+  int32 feature_bedrooms = 14;
+  int32 feature_bathrooms = 15;
+  int32 feature_size = 16;
+  string cover_photo = 17;
+  google.protobuf.Struct property_about = 18;
+  google.protobuf.Struct property_management = 19;
+  repeated PropertyNearbySchool property_nearby_school = 20;
+  repeated PropertyNeighbourhood property_neighbourhood = 21;
+  repeated PropertyImages property_images = 22;
+  string video_preview = 23;
+  string property_id = 24;
+  bool is_property_available = 25;
+  bool is_property_on_hold = 26;
+  bool is_property_under_review = 27;
+  bool is_rent_finance_eligible = 28;
+  string property_tour_video = 29;
+  string property_is_held_by = 30;
+  string lease_terms = 31;
+  string hostel_room_size = 32;
+  string hostel_resident_gender = 33;
+  string rooms_to_share = 34;
+  int32 group_id = 35;
+  int32 rent_tenure_term = 36;
+}
+
+message FindOneRequest { string id = 1; }
+
+message FindOneResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  FindOneData data = 4;
+}
+
+message PropertyNearbySchool  {
+	string name = 1;
+	int64 level = 2;
+  string level_text = 3;
+	string grades = 4;
+	string distance = 5;
+	string description = 6;
+	string property_id = 7;
+}
+
+message PropertyNeighbourhood  {
+	string name =1;
+	int64 type =2;
+  string type_text =3;
+	double distance =4;
+	string description =5;
+	string property_id =6;
+}
+
+message PropertyImages  {
+	string image = 1;
+	string property_id = 2;
+}
+
+message Property {
+  string name = 1;
+  int64 property_type = 2;
+  string property_type_text = 3;
+  string property_reference = 4;
+  string location_text = 5;
+  double location_coordinates_lat = 6;
+  double location_coordinates_long = 7;
+  double price = 8;
+  string description = 9;
+  int32 feature_bedrooms = 10;
+  int32 feature_bathrooms = 11;
+  int32 feature_size = 12;
+  string cover_photo = 13;
+  google.protobuf.Struct property_about = 14;
+  google.protobuf.Struct property_management = 15;
+  repeated PropertyNearbySchool property_nearby_school = 16;
+  repeated PropertyNeighbourhood property_neighbourhood = 17;
+  repeated PropertyImages property_images = 18;
+  string video_preview = 19;
+  string property_id = 20;
+  bool is_property_available = 21;
+  bool is_property_on_hold = 22;
+  string property_is_held_by = 23;
+  int32 rent_tenure_term = 24;
+}
+
+message AddUserPropertyPreferenceRequest {
+  int32 room_qty = 1;
+  int32 bathroom_qty = 2;
+  int64 property_type = 3;
+  double minimum_rent = 4;
+  double maximum_rent = 5;
+  string user_id = 6;
+}
+
+message AddUserPropertyPreferenceResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+message AddUserSavedPropertyRequest {
+  string user_id = 1;
+  string property_id = 2;
+}
+
+message AddUserSavedPropertyResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message UserSavedProperty {
+  string user_id = 1;
+  string property_id = 2;
+}
+
+message GetUserSavedPropertiesRequest {
+  string user_id = 1;
+}
+
+message GetUserSavedPropertiesResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  repeated Property properties = 4;
+}
+
+message HoldPropertyRequest {
+  string user_id = 1;
+  string property_id = 2;
+}
+
+message HoldPropertyResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message RetrievedPropertyLocks {
+  string id = 1;
+  int32 lock_id = 2;
+}
+
+message GetLocksByGroupIdRequest {
+  int32 group_id = 1;
+}
+
+message GetLocksByGroupIdResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  repeated RetrievedPropertyLocks property_locks = 4;
+}

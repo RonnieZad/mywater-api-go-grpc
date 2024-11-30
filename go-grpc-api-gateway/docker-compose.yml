@@ -1,0 +1,28 @@
+version: '3'
+services:
+  grpcsrv-auth:
+    build:
+      context: ../go-grpc-auth-svc
+    ports:
+      - '8081:50051'
+    environment:
+      - PAYMENT_SVC_URL=grpcsrv-payment:50052
+  grpcsrv-payment:
+    build:
+      context: ../go-grpc-payment-svc
+    ports:
+      - '8082:50052'
+    environment:
+      - AUTH_SVC_URL=grpcsrv-auth:50051
+  grpcsrv-application:
+    build:
+      context: ../go-grpc-payment-svc
+    ports:
+      - '8082:50052'
+    environment:
+      - AUTH_SVC_URL=grpcsrv-auth:50051
+  grpcsrv-gateway:
+    build:
+      context: ../go-grpc-api-gateway
+    ports:
+      - '8085:3000'

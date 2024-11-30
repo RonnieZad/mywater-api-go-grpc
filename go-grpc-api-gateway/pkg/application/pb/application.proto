@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package application;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "./pkg/application/pb";
+
+service ApplicationService {
+  rpc AddLabelAdvert(AddLabelAdvertRequest) returns (AddLabelAdvertResponse) {}
+  rpc AddLabelScan(AddLabelScanRequest) returns (AddLabelScanResponse) {}
+  rpc GetUserLabelScan(GetUserLabelScanRequest) returns (GetUserLabelScanResponse) {}
+  rpc GetUserLabelAdvert(GetUserLabelAdvertRequest) returns (GetUserLabelAdvertResponse) {}
+  rpc GetCompanyDashboardAnalytic(GetCompanyDashboardAnalyticRequest) returns (GetCompanyDashboardAnalyticResponse) {}
+}
+
+//label adverts created by advertisers
+
+message AddLabelAdvertRequest {
+  string advertiser_id = 1;
+  string advert_public_url = 2;
+  string promotion_text = 3;
+  string promotion_description = 4;
+  string picture_url = 5;
+  string expiry_date = 6;
+}
+
+message AddLabelAdvertResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+
+message CityScan {
+  string city = 1;
+  int32 scan_count = 2;
+}
+
+message GetUserLabelAdvertRequest {
+  string advertiser_id = 1;
+}
+
+message GetUserLabelAdvertResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  repeated LabelAdvert adverts = 4;
+}
+
+message LabelAdvert {
+  string advert_id = 1;
+  string advert_public_url = 2;
+  string promotion_text = 3;
+  string promotion_description = 4;
+  string picture_url = 5;
+  string expiry_date = 6;
+  string company_name = 7;
+  string company_logo = 8;
+  string company_website = 9;
+  string company_email = 10;
+  string company_phone = 11;
+  string company_address = 12;
+  string company_description = 13;
+  string scan_date = 14;
+  string creation_date = 15;
+  int64 scan_count = 16;
+  int64 reward_point = 17; 
+  repeated CityScan city_scans = 18;
+}
+
+//label scans created by consumers
+
+message AddLabelScanRequest {
+  string user_id = 1;
+  string advertiser_id = 2;
+  string advert_id = 3;    
+  string user_latitude = 4;
+  string user_longitude = 5;
+}
+
+message AddLabelScanResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+}
+
+message GetUserLabelScanRequest {
+  string user_id = 1;  
+}
+
+message GetUserLabelScanResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  repeated LabelAdvert scans = 4;
+  int64 total_points = 5;
+}
+
+message GetCompanyDashboardAnalyticRequest {
+  string advertiser_id = 1;
+}
+
+message GetCompanyDashboardAnalyticResponse {
+  int64 status = 1;
+  string error = 2;
+  string message = 3;
+  repeated google.protobuf.Struct analytics = 4;
+}

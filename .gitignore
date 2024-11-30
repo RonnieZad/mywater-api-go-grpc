@@ -1,0 +1,12 @@
+# cmd files
+/cmd/.env
+/cmd/grpcsrv-gateway
+/cmd/grpcsrv-auth
+/cmd/grpcsrv-payment
+/cmd/grpcsrv-application
+
+/pkg/pb/*.pb.go
+
+/.env
+/*.crt
+/*.key
