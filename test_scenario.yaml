@@ -21,20 +21,3 @@ scenarios:
             repeat_password: "password123"  # Replace with the desired repeat password
       # - afterResponse:
       #     - log: "Registration successful - {{ __capture(response) }}"  # Log the response for successful registration
-
-
-# config:
-#   target: "https://airportgap-stress-test.dev-tester.com/api"
-#   phases:
-#     - duration: 60
-#       arrivalRate: 5
-#       rampTo: 25
-
-# scenarios:
-#   - name: "Calculate airport distances"
-#     flow:
-#       - post:
-#           url: "/airports/distance"
-#           json:
-#             from: "KIX"
-#             to: "SFO"
